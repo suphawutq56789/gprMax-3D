@@ -1,0 +1,48 @@
+#title: 3D survey | Air void diameter=2m | depth=3m | 250 MHz
+
+#domain: 6.0 5.0 5.0
+#dx_dy_dz: 0.02 0.02 0.02
+#time_window: 1.5e-7
+
+#material: 6 0.01 1 0 half_space
+#material: 1 0    1 0 air
+
+#box: 0 0 0    6.0 5.0 0.5 free_space
+#box: 0 0 0.5  6.0 5.0 5.0 half_space
+
+#waveform: ricker 1 2.5e8 my_ricker
+
+#python:
+from gprMax.input_cmd_funcs import *
+
+# Survey parameters
+Nx = 80
+Ny = 60
+
+x0 = 0.5
+y0 = 0.5
+dx_trace = 0.06
+dy_trace = 0.06
+
+z_surf = 0.5
+txrx_offset = 0.1
+
+# Void parameters
+r_void = 1.0           # radius = 1m (diameter = 2m)
+x_void = 3.0           # center X
+y_void = 2.5           # center Y
+z_void = z_surf + 3.0  # depth = 3m from surface
+
+sphere(x_void, y_void, z_void, r_void, 'air')
+
+r = current_model_run - 1
+ix = r % Nx
+iy = r // Nx
+
+xTx = x0 + ix * dx_trace
+yLine = y0 + iy * dy_trace
+xRx = xTx + txrx_offset
+
+hertzian_dipole('z', xTx, yLine, z_surf, 'my_ricker')
+rx(xRx, yLine, z_surf)
+#end_python:
