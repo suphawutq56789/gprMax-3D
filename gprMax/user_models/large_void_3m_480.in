@@ -4,7 +4,7 @@
 #dx_dy_dz: 0.02 0.02 0.02
 #time_window: 1.5e-7
 
-#material: 6 0.01 1 0 half_space
+#material: 6 0.001 1 0 half_space
 #material: 1 0    1 0 air
 
 #box: 0 0 0    6.0 5.0 0.5 free_space
