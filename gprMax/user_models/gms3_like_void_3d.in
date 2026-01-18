@@ -1,4 +1,4 @@
-#title: GMS3-like 3D survey | Air void (clear B-scan + C-scan) | ~400 MHz
+#title: GMS3-like 3D survey | Air void (clear B-scan + C-scan) | ~500 MHz
 
 #domain: 6.0 5.0 3.0
 #dx_dy_dz: 0.02 0.02 0.02
@@ -10,7 +10,7 @@
 #box: 0 0 0    6.0 5.0 0.5 free_space
 #box: 0 0 0.5  6.0 5.0 3.0 half_space
 
-#waveform: ricker 1 4.0e8 my_ricker
+#waveform: ricker 1 5.0e8 my_ricker
 
 #python:
 from gprMax.input_cmd_funcs import *
