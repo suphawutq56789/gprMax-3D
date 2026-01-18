@@ -10,7 +10,7 @@
 #box: 0 0 0    6.0 5.0 0.5 free_space
 #box: 0 0 0.5  6.0 5.0 3.0 half_space
 
-#waveform: ricker 1 8.0e8 my_ricker   # ~800 MHz centre frequency
+#waveform: ricker 1 8.0e8 my_ricker
 
 #python:
 from gprMax.input_cmd_funcs import *
