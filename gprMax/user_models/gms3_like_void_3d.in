@@ -1,0 +1,48 @@
+#title: GMS3-like 3D survey | Air void (clear B-scan + C-scan) | ~800 MHz
+
+#domain: 6.0 5.0 3.0
+#dx_dy_dz: 0.02 0.02 0.02
+#time_window: 8.0e-8
+
+#material: 9 0.005 1 0 half_space
+#material: 1 0    1 0 air
+
+#box: 0 0 0    6.0 5.0 0.5 free_space
+#box: 0 0 0.5  6.0 5.0 3.0 half_space
+
+#waveform: ricker 1 8.0e8 my_ricker   # ~800 MHz centre frequency
+
+#python:
+from gprMax.input_cmd_funcs import *
+
+# ---- Survey grid (like 3D multi-channel coverage) ----
+Nx = 80
+Ny = 60
+
+x0 = 0.5
+y0 = 0.5
+dx_trace = 0.05
+dy_trace = 0.05
+
+z_surf = 0.5
+rx_offset = 0.10
+
+# ---- Void (make it obvious) ----
+r_void = 0.40          # 0.8 m diameter
+x_void = 3.0
+y_void = 2.5
+z_void = z_surf + 1.20 # ~1.2 m below surface
+
+sphere(x_void, y_void, z_void, r_void, 'air')
+
+# ---- Move Tx/Rx for each run ----
+r = current_model_run - 1
+ix = r % Nx
+iy = r // Nx
+
+xTx = x0 + ix * dx_trace
+yLine = y0 + iy * dy_trace
+
+hertzian_dipole('z', xTx, yLine, z_surf, 'my_ricker')
+rx(xTx + rx_offset, yLine, z_surf)
+#end_python:
