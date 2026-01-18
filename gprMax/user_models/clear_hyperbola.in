@@ -1,0 +1,48 @@
+#title: 3D survey | Clear hyperbola | Air void diameter=1m | depth=1.5m | 400 MHz
+
+#domain: 4.0 3.0 3.0
+#dx_dy_dz: 0.01 0.01 0.01
+#time_window: 6e-8
+
+#material: 6 0.0005 1 0 half_space
+#material: 1 0 1 0 air
+
+#box: 0 0 0    4.0 3.0 0.3 free_space
+#box: 0 0 0.3  4.0 3.0 3.0 half_space
+
+#waveform: ricker 1 4e8 my_ricker
+
+#python:
+from gprMax.input_cmd_funcs import *
+
+# Survey parameters - 2400 traces total (80 x 30)
+Nx = 80
+Ny = 30
+
+x0 = 0.2
+y0 = 0.2
+dx_trace = 0.045    # 4.5cm spacing -> covers 3.6m
+dy_trace = 0.085    # 8.5cm spacing -> covers 2.55m
+
+z_surf = 0.3
+txrx_offset = 0.06
+
+# Void parameters - shallower and smaller for clear hyperbola
+r_void = 0.5           # radius = 0.5m (diameter = 1m)
+x_void = 2.0           # center X
+y_void = 1.5           # center Y
+z_void = z_surf + 1.5  # depth = 1.5m from surface
+
+sphere(x_void, y_void, z_void, r_void, 'air')
+
+r = current_model_run - 1
+ix = r % Nx
+iy = r // Nx
+
+xTx = x0 + ix * dx_trace
+yLine = y0 + iy * dy_trace
+xRx = xTx + txrx_offset
+
+hertzian_dipole('z', xTx, yLine, z_surf, 'my_ricker')
+rx(xRx, yLine, z_surf)
+#end_python:
